@@ -1,0 +1,30 @@
+{
+	"name": "claremontdesign/cdecommerce",
+	"description": "Claremontdesign eCommerce Package",
+	"license": "ClaremontDesign Propreitary",
+	"authors": [
+		{
+			"name": "Dennes B Abing",
+			"email": "dennes.b.abing@gmail.com"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Claremontdesign\\Ecommerce\\": "src/"
+		},
+		"files": [
+			"src/Helpers/helpers.php"
+		]
+	},
+	"autoload-dev": {
+		"classmap": [
+			"tests/TestCase.php"
+		]
+	},
+	"minimum-stability": "dev",
+	"require": {
+		"illuminate/support": "~5",
+		"claremontdesign/cdbase": "dev-master",
+		"claremontdesign/cdbackend": "dev-master"
+	}
+}
