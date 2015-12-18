@@ -18,6 +18,7 @@ namespace Claremontdesign\Ecommerce\Model;
 use Claremontdesign\Cdbase\Repository\Contracts\FilterableInterface;
 use Claremontdesign\Cdbase\Repository\Contracts\JoinableInterface;
 use Claremontdesign\Cdbase\Repository\Contracts\SortableInterface;
+use Claremontdesign\Cdbase\Repository\Contracts\CategorybleInterface;
 use Claremontdesign\Cdbase\Repository\Traits\Filterable;
 use Claremontdesign\Cdbase\Repository\Traits\Joinable;
 use Claremontdesign\Cdbase\Repository\Traits\Sortable;
@@ -26,7 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Claremontdesign\Cdbase\Widgets\ModelInterface as WidgetModelInterface;
 use Claremontdesign\Cdbase\Widgets\WidgetTypes\WidgetTypeInterface;
 
-class Product extends Model implements WidgetModelInterface, FilterableInterface, JoinableInterface, SortableInterface
+class Product extends Model implements WidgetModelInterface, FilterableInterface, JoinableInterface, SortableInterface, CategorybleInterface
 {
 
 	use Filterable,
@@ -65,9 +66,19 @@ class Product extends Model implements WidgetModelInterface, FilterableInterface
 	 * Product Categories
 	 * @return Collection
 	 */
-	public function getCategories()
+	public function scopeCategories($query = null)
 	{
 		return $this->categories();
+	}
+
+	/**
+	 * Product Categories
+	 *
+	 * @return Collection
+	 */
+	public function getCategories()
+	{
+		return $this->categories()->get();
 	}
 
 	// </editor-fold>
@@ -137,7 +148,15 @@ class Product extends Model implements WidgetModelInterface, FilterableInterface
 	 */
 	public function widgetPostProcess(WidgetTypeInterface $widget, $crud, $modelId, $data, $result)
 	{
-
+		if($crud == 'update')
+		{
+			if(!empty($data['category']))
+			{
+				$this->categories()->sync($data['category']);
+			} else {
+				$this->categories()->detach();
+			}
+		}
 	}
 
 	/**

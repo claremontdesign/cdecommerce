@@ -26,15 +26,3 @@ $factory->define(cd_config('database.e.product.model.class'), function (Faker\Ge
 		'updated_at' => $faker->date('Y-m-d')
 	];
 });
-
-$factory->define(cd_config('database.e.productCategory.model.class'), function (Faker\Generator $faker) {
-	$title = implode(' ',$faker->words(rand(2, 4)));
-	return [
-		'title' => $title,
-		'description' => $faker->text(rand(100, 200)),
-		'status' => rand(0, 1),
-		'slug' => \Illuminate\Support\Str::slug($title),
-		'created_at' => $faker->date('Y-m-d'),
-		'updated_at' => $faker->date('Y-m-d')
-	];
-});

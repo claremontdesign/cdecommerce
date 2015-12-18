@@ -35,6 +35,11 @@ $config = [
 					],
 					'widgets' => ['ecommerceProductsData']
 				],
+				'category' => [
+					'enable' => true,
+					'hidden' => true,
+					'widgets' => ['ecommerceProductsCategorySelectableTree']
+				],
 				'update' => [
 					'enable' => true,
 					'widgets' => ['ecommerceProductsForm']

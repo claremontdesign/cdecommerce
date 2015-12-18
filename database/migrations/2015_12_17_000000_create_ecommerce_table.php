@@ -53,6 +53,17 @@ class CreateEcommerceTable extends Migration
 			$table->string('redirect_url')->nullable();
 			$table->text('description')->nullable();
 			$table->boolean('status')->nullable();
+
+			// These columns are needed for Baum's Nested Set implementation to work.
+			// Column names may be changed, but they *must* all exist and be modified
+			// in the model.
+			// Take a look at the model scaffold comments for details.
+			// We add indexes on parent_id, lft, rgt columns by default.
+			$table->integer('parent_id')->nullable()->index();
+			$table->integer('lft')->nullable()->index();
+			$table->integer('rgt')->nullable()->index();
+			$table->integer('depth')->nullable();
+
 			$table->timestamps();
 			$table->softDeletes();
 		});
@@ -62,10 +73,9 @@ class CreateEcommerceTable extends Migration
 		 */
 		Schema::create(cd_config('database.e.productCategoryPivot.table.name'), function(Blueprint $table)
 		{
-			$table->increments(cd_config('database.e.productCategoryPivot.table.primary'));
-			$table->string('product_id')->nullable();
-			$table->string('category_id')->nullable();
-			$table->integer('position')->unsigned();
+			$table->integer(cd_config('database.e.product.table.primary'))->nullable();
+			$table->integer(cd_config('database.e.productCategory.table.primary'))->nullable();
+			$table->primary([cd_config('database.e.product.table.primary'), cd_config('database.e.productCategory.table.primary')]);
 		});
 	}
 

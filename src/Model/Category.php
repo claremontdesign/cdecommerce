@@ -18,15 +18,16 @@ namespace Claremontdesign\Ecommerce\Model;
 use Claremontdesign\Cdbase\Repository\Contracts\FilterableInterface;
 use Claremontdesign\Cdbase\Repository\Contracts\JoinableInterface;
 use Claremontdesign\Cdbase\Repository\Contracts\SortableInterface;
+use Claremontdesign\Cdbase\Repository\Contracts\CategorybleitemsInterface;
 use Claremontdesign\Cdbase\Repository\Traits\Filterable;
 use Claremontdesign\Cdbase\Repository\Traits\Joinable;
 use Claremontdesign\Cdbase\Repository\Traits\Sortable;
-use Claremontdesign\Cdbase\Model\Model;
+use Claremontdesign\Cdbase\Model\NestedModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Claremontdesign\Cdbase\Widgets\ModelInterface as WidgetModelInterface;
 use Claremontdesign\Cdbase\Widgets\WidgetTypes\WidgetTypeInterface;
 
-class Category extends Model implements WidgetModelInterface, FilterableInterface, JoinableInterface, SortableInterface
+class Category extends NestedModel implements WidgetModelInterface, FilterableInterface, JoinableInterface, SortableInterface, CategorybleitemsInterface
 {
 
 	use Filterable,
@@ -65,48 +66,24 @@ class Category extends Model implements WidgetModelInterface, FilterableInterfac
 	 * Category Products
 	 * @return Collection
 	 */
-	public function getProducts()
+	public function scopeCategoryItems($query = null)
 	{
 		return $this->products();
+//
+//public function scopeCategorized($query, Category $category=null) {
+//    if ( is_null($category) ) return $query->with('categories');
+//
+//    $categoryIds = $category->getDescendantsAndSelf()->lists('id');
+//
+//    return $query->with('categories')
+//      ->join('products_categories', 'products_categories.product_id', '=', 'products.id')
+//      ->whereIn('products_categories.category_id', $categoryIds);
+//  }
+
+
 	}
 
 	// </editor-fold>
-
-	/**
-	 * Return the name of the 'status' column
-	 * @return string
-	 */
-	public function getStatusColumn()
-	{
-		return 'status';
-	}
-
-	/**
-	 * Item Id
-	 * @return integer
-	 */
-	public function id()
-	{
-		return (int) $this->{$this->primaryKey};
-	}
-
-	/**
-	 * Title
-	 * @return string
-	 */
-	public function title()
-	{
-		return $this->title;
-	}
-
-	/**
-	 * Description
-	 * @return string
-	 */
-	public function description()
-	{
-		return $this->description;
-	}
 
 	// <editor-fold defaultstate="collapsed" desc="WIDGET">
 	/**

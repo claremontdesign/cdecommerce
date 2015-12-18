@@ -104,4 +104,6 @@ $config = [
 		]
 	],
 ];
-return $config;
+return array_merge_recursive(
+		$config, require __DIR__ . '/../widgets/ecommerceProductsCategorySelectableTree.php'
+		);

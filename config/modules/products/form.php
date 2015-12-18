@@ -66,6 +66,19 @@ return [
 						],
 						'elements' => ['metaTitle', 'metaDescription', 'metaKeywords']
 					],
+					'categories' => [
+						'enable' => true,
+						'position' => 50,
+						'attributes' => [
+							'label' => 'Categories',
+						],
+						'events' => [
+							'onclick' => [
+								'ajax' => true
+							],
+						],
+						'elements' => ['category']
+					],
 				],
 				'actions' => [
 					'submit' => [
@@ -277,6 +290,20 @@ return [
 						'position' => 1,
 						'attributes' => [
 							'label' => 'Status',
+						],
+					],
+					'category' => [
+						'enable' => true,
+						'type' => 'checkabletree',
+						'position' => 1,
+						'attributes' => [
+							'label' => 'Category',
+						],
+						'defer' => [
+							'enable' => true
+						],
+						'view' => [
+							'widget' => 'ecommerceProductsCategorySelectableTree'
 						],
 					],
 				],
