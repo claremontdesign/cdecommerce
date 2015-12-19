@@ -102,6 +102,16 @@ class Category extends Repository implements RepositoryModuleInterface
 	}
 
 	/**
+	 * Sort
+	 * @return array
+	 */
+	protected function _sort()
+	{
+		$sort = [];
+		return $sort;
+	}
+
+	/**
 	 * Joins
 	 * @return array
 	 */

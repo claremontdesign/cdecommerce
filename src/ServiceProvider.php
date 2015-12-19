@@ -27,6 +27,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 		app('cdbase')->addPackage(\Claremontdesign\Ecommerce\Ecommerce::class);
 		app('cdbase')->addModule('ecommerce', __DIR__ . '/../config/modules/ecommerce.php');
 		app('cdbase')->addModule('ecommerce-products', __DIR__ . '/../config/modules/products/products.php');
+		app('cdbase')->addModule('ecommerce-categories', __DIR__ . '/../config/modules/categories/categories.php');
 		app('cdbase')->addCommand('migrate', 'db:seed --class=EcommerceTableSeeder');
 	}
 
