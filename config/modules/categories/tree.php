@@ -24,6 +24,10 @@ return [
 				'multiple' => false,
 				'positionable' => true,
 				'collapsed' => true,
+				'dualpane' => true
+			],
+			'infopane' => [
+				'widget' => ['ecommerceCategoryForm'],
 			],
 			'messages' => [
 				'empty' => [

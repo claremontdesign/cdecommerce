@@ -18,6 +18,7 @@ namespace Claremontdesign\Ecommerce\Model\Repository;
 use Claremontdesign\Cdbase\Model\Repository\Repository;
 use Claremontdesign\Cdbase\Modules\RepositoryModuleInterface;
 use Claremontdesign\Ecommerce\Model\Product as Model;
+use Claremontdesign\Ecommerce\Model\Category as ModelCategory;
 
 class Product extends Repository implements RepositoryModuleInterface
 {
@@ -59,6 +60,46 @@ class Product extends Repository implements RepositoryModuleInterface
 	public function getAll($columns = ['*'], $filters = [], $sort = [], $joins = [], $paginate = [], $options = [], $debug = false)
 	{
 		return $this->_casts($this->repo->setDebug($debug)->getAll($this->_columns(), $filters, $sort, $this->_joins(), $paginate, $options));
+	}
+
+	/**
+	 *
+	 * @param \Claremontdesign\Ecommerce\Model\Category $category
+	 * @param type $columns
+	 * @param type $filters
+	 * @param type $sort
+	 * @param type $joins
+	 * @param type $paginate
+	 * @param type $options
+	 * @param type $debug
+	 * @return Collection of Model
+	 */
+	public function byNestedSet(ModelCategory $node, $columns = ['*'], $filters = [], $sort = [], $joins = [], $paginate = [], $options = [], $debug = false)
+	{
+		$nodeIds = $node->getDescendantsAndSelf()->lists(cd_config('database.e.productCategory.table.primary'));
+		$columns = [$this->_table() . '.*'];
+		$joins = [];
+		$joins[] = [
+			'model' => $this->_pivotTable() . ' as ' . $this->_pivotTable(),
+			'foreign_key' => $this->_pivotTable() . '.' . $this->_primaryKey(),
+			'local_key' => $this->_table() . '.' . $this->_primaryKey(),
+		];
+		$joins[] = [
+			'model' => $this->_categoryTable() . ' as ' . $this->_categoryTable(),
+			'foreign_key' => $this->_categoryTable() . '.' . $this->_categoryPrimaryKey(),
+			'local_key' => $this->_pivotTable() . '.' . $this->_categoryPrimaryKey(),
+		];
+
+
+		$filters[] = [
+			$this->_pivotTable() . '.' . $this->_categoryPrimaryKey() => [
+				'in' => [
+					'field' => $this->_pivotTable() . '.' . $this->_categoryPrimaryKey(),
+					'values' => $nodeIds
+				]
+			]
+		];
+		return $this->getAll($columns, $filters, $sort, $joins, $paginate, $options, $debug);
 	}
 
 	/**
@@ -146,6 +187,33 @@ class Product extends Repository implements RepositoryModuleInterface
 	protected function _statusColumn()
 	{
 		return $this->repo->getModel()->getStatusColumn();
+	}
+
+	/**
+	 * Return the Item Table
+	 * @return string
+	 */
+	protected function _categoryTable()
+	{
+		return cd_config('database.e.productCategory.table.name');
+	}
+
+	/**
+	 * Return the Primary Key
+	 * @return string
+	 */
+	protected function _categoryPrimaryKey()
+	{
+		return cd_config('database.e.productCategory.table.primary');
+	}
+
+	/**
+	 * Return the Item Table
+	 * @return string
+	 */
+	protected function _pivotTable()
+	{
+		return cd_config('database.e.productCategoryPivot.table.name');
 	}
 
 }

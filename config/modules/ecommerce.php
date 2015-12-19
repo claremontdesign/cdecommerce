@@ -57,10 +57,26 @@ $config = [
 								'url' => [
 									'route' => [
 										'name' => 'Module',
-										'module' => 'ecommerce-category'
+										'module' => 'ecommerce-categories'
 									],
 								],
-								'children' => []
+								'children' => [
+									'products' => [
+											'breadcrumbs' => true,
+											'label' => 'Products',
+											'title' => 'Products',
+											'icon' => 'fa fa-shopping-cart',
+											'access' => 'minimum',
+											'enable' => true,
+											'url' => [
+												'route' => [
+													'name' => 'Module',
+													'module' => 'ecommerce-products'
+												],
+											],
+											'children' => []
+										],
+								]
 							],
 						]
 					],

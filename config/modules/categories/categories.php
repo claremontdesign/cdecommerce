@@ -24,7 +24,7 @@ $config = [
 			],
 			'breadcrumb' => [
 				'nav::ecommerce',
-				'nav::ecommerce.children.categories'
+				'nav::ecommerce.children.productsCategory'
 			],
 			'module' => [
 				'controller' => [
@@ -40,16 +40,18 @@ $config = [
 					],
 					'widgets' => ['ecommerceCategoriesTreeview']
 				],
-				'update' => [
-					'enable' => true,
-					'widgets' => ['ecommerceCategoriesForm']
-				],
 				'position' => [
 					'enable' => true,
 					'request' => [
 						'methods' => ['ajaxpost']
 					],
 					'nested' => [
+						'attributes' => [
+							'recordName' => [
+								'singular' => 'Category',
+								'plural' => 'Categories'
+							],
+						],
 						'models' => [
 							'category' => [
 								'primaryKey' => cd_config('database.e.productCategory.table.primary'),
@@ -87,15 +89,11 @@ $config = [
 						]
 					],
 				],
+				'update' => [
+					'enable' => true,
+					'widgets' => ['ecommerceCategoryForm']
+				],
 				'delete' => [
-					'enable' => true,
-					'widgets' => ['ecommerceCategoriesForm']
-				],
-				'view' => [
-					'enable' => true,
-					'widgets' => ['ecommerceCategoriesForm']
-				],
-				'duplicate' => [
 					'enable' => true,
 					'widgets' => ['ecommerceCategoriesForm']
 				],
@@ -106,6 +104,49 @@ $config = [
 						'pagesubtitle' => 'Create a new category.'
 					],
 					'widgets' => ['ecommerceCategoriesForm']
+				],
+				'products' => [
+					'enable' => false,
+					'request' => [
+//						'methods' => ['ajaxpost','ajaxget']
+					],
+					'breadcrumb' => [
+						'nav::ecommerce.children.productsCategory.children.products'
+					],
+					'parent' => [
+						'parent' => [
+							'enable' => true,
+							'request' => [
+								'index' => ['record']
+							],
+							'route' => [
+								[
+									'record' => [
+										'name' => 'Module',
+										'module' => 'ecommerce-categories'
+									],
+								]
+							],
+							'model' => [
+								'value' => [
+									'index' => ['category_id']
+								],
+								'repository' => [
+									'record' => [
+										'primaryKey' => cd_config('database.e.productCategory.table.primary'),
+										'class' => cd_config('database.e.productCategory.model.class'),
+										'repository' => [
+											'class' => cd_config('database.e.productCategory.repository.class')
+										],
+									],
+								],
+							],
+							'error' => [
+								'notfound' => 'Category not found.'
+							],
+						],
+					],
+					'widgets' => ['ecommerceCategoryProductsData']
 				],
 			],
 		]

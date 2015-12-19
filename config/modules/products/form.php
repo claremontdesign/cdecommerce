@@ -332,7 +332,7 @@ return [
 								'enable' => true,
 								'route' => [
 									'name' => 'Module',
-									'module' => 'ecommerce-product'
+									'module' => 'ecommerce-categories'
 								]
 							],
 							'back' => [],
@@ -354,7 +354,7 @@ return [
 								'url' => [
 									'route' => [
 										'name' => 'Module',
-										'module' => 'ecommerce-product',
+										'module' => 'ecommerce-categories',
 										'action' => 'update'
 									]
 								],
@@ -387,7 +387,7 @@ return [
 								'url' => [
 									'route' => [
 										'name' => 'Module',
-										'module' => 'ecommerce-product',
+										'module' => 'ecommerce-categories',
 										'action' => 'delete'
 									]
 								],
@@ -426,7 +426,7 @@ return [
 								'enable' => true,
 								'route' => [
 									'name' => 'Module',
-									'module' => 'ecommerce-product',
+									'module' => 'ecommerce-categories',
 								]
 							],
 							'message' => 'Delete successfull!'

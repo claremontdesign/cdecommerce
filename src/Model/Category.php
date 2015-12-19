@@ -69,22 +69,8 @@ class Category extends NestedModel implements WidgetModelInterface, FilterableIn
 	public function scopeCategoryItems($query = null)
 	{
 		return $this->products();
-//
-//public function scopeCategorized($query, Category $category=null) {
-//    if ( is_null($category) ) return $query->with('categories');
-//
-//    $categoryIds = $category->getDescendantsAndSelf()->lists('id');
-//
-//    return $query->with('categories')
-//      ->join('products_categories', 'products_categories.product_id', '=', 'products.id')
-//      ->whereIn('products_categories.category_id', $categoryIds);
-//  }
-
-
 	}
-
 	// </editor-fold>
-
 	// <editor-fold defaultstate="collapsed" desc="WIDGET">
 	/**
 	 * Check widget access

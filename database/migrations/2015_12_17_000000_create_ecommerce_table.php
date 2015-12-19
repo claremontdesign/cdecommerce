@@ -75,6 +75,7 @@ class CreateEcommerceTable extends Migration
 		{
 			$table->integer(cd_config('database.e.product.table.primary'))->nullable();
 			$table->integer(cd_config('database.e.productCategory.table.primary'))->nullable();
+			$table->integer('position')->nullable()->default(0);
 			$table->primary([cd_config('database.e.product.table.primary'), cd_config('database.e.productCategory.table.primary')]);
 		});
 	}

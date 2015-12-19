@@ -148,4 +148,31 @@ class Category extends Repository implements RepositoryModuleInterface
 		return $this->repo->getModel()->getStatusColumn();
 	}
 
+	/**
+	 * Return the Item Table
+	 * @return string
+	 */
+	protected function _itemTable()
+	{
+		return cd_config('database.e.product.table.name');
+	}
+
+	/**
+	 * Return the Primary Key
+	 * @return string
+	 */
+	protected function _itemPrimaryKey()
+	{
+		return cd_config('database.e.product.table.primary');
+	}
+
+	/**
+	 * Return the Item Table
+	 * @return string
+	 */
+	protected function _pivotTable()
+	{
+		return cd_config('database.e.productCategoryPivot.table.name');
+	}
+
 }

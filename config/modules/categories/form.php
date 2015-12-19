@@ -15,7 +15,7 @@
  */
 return [
 	'widgets' => [
-		'ecommerceProductsForm' => [
+		'ecommerceCategoryForm' => [
 			'enable' => true,
 			'type' => 'form',
 			'access' => 'minimum',
@@ -25,8 +25,8 @@ return [
 			],
 			'attributes' => [
 				'recordName' => [
-					'singular' => 'Product',
-					'plural' => 'Products'
+					'singular' => 'Category',
+					'plural' => 'Categories'
 				],
 			],
 			'form' => [
@@ -48,15 +48,7 @@ return [
 						'attributes' => [
 							'label' => 'General',
 						],
-						'elements' => ['title', 'description', 'shortDescription', 'sku', 'slug', 'status']
-					],
-					'price' => [
-						'enable' => true,
-						'position' => 70,
-						'attributes' => [
-							'label' => 'Prices',
-						],
-						'elements' => ['price']
+						'elements' => ['title', 'description', 'shortDescription', 'slug', 'status']
 					],
 					'meta' => [
 						'enable' => true,
@@ -66,18 +58,13 @@ return [
 						],
 						'elements' => ['metaTitle', 'metaDescription', 'metaKeywords']
 					],
-					'categories' => [
+					'products' => [
 						'enable' => true,
 						'position' => 50,
 						'attributes' => [
-							'label' => 'Categories',
+							'label' => 'Products',
 						],
-						'events' => [
-							'onclick' => [
-								'ajax' => true
-							],
-						],
-						'elements' => ['category']
+						'elements' => ['products']
 					],
 				],
 				'actions' => [
@@ -113,7 +100,7 @@ return [
 							'url' => [
 								'route' => [
 									'name' => 'Module',
-									'module' => 'ecommerce-products',
+									'module' => 'ecommerce-categories',
 								]
 							],
 							'html' => [
@@ -143,46 +130,6 @@ return [
 							'required' => [
 								'enable' => true,
 								'message' => 'Title is required.'
-							],
-						],
-					],
-					'sku' => [
-						'enable' => true,
-						'model' => [
-							'value' => [
-								'index' => 'sku',
-							],
-						],
-						'type' => 'text',
-						'position' => 3,
-						'attributes' => [
-							'label' => 'SKU',
-							'placeholder' => 'SKU'
-						],
-						'validation' => [
-							'required' => [
-								'enable' => true,
-								'message' => 'SKU is required.'
-							],
-						],
-					],
-					'price' => [
-						'enable' => true,
-						'model' => [
-							'value' => [
-								'index' => 'price',
-							],
-						],
-						'type' => 'price',
-						'position' => 3,
-						'attributes' => [
-							'label' => 'Price',
-							'placeholder' => 'Price'
-						],
-						'validation' => [
-							'required' => [
-								'enable' => false,
-								'message' => 'Price is required.'
 							],
 						],
 					],
@@ -292,30 +239,30 @@ return [
 							'label' => 'Status',
 						],
 					],
-					'category' => [
+					'products' => [
 						'enable' => true,
-						'type' => 'checkabletree',
+						'type' => 'widget',
 						'position' => 1,
 						'attributes' => [
-							'label' => 'Category',
+							'label' => 'Products',
 						],
 						'defer' => [
 							'enable' => true
 						],
 						'view' => [
-							'widget' => 'ecommerceProductsCategorySelectableTree'
+							'widget' => 'ecommerceCategoryProductsData'
 						],
 					],
 				],
 			],
 			'model' => [
 				'value' => [
-					'index' => cd_config('database.e.product.table.primary')
+					'index' => cd_config('database.e.productCategory.table.primary')
 				],
-				'class' => cd_config('database.e.product.model.class'),
+				'class' => cd_config('database.e.productCategory.model.class'),
 				'repository' => [
-					'class' => cd_config('database.e.product.repository.class'),
-					'index' => cd_config('database.e.product.table.name') . '.' . cd_config('database.e.product.table.primary'),
+					'class' => cd_config('database.e.productCategory.repository.class'),
+					'index' => cd_config('database.e.productCategory.table.name') . '.' . cd_config('database.e.productCategory.table.primary'),
 				],
 				'crud' => [
 					'duplicate' => [
@@ -332,7 +279,7 @@ return [
 								'enable' => true,
 								'route' => [
 									'name' => 'Module',
-									'module' => 'ecommerce-product'
+									'module' => 'ecommerce-categories'
 								]
 							],
 							'back' => [],
@@ -354,7 +301,7 @@ return [
 								'url' => [
 									'route' => [
 										'name' => 'Module',
-										'module' => 'ecommerce-product',
+										'module' => 'ecommerce-categories',
 										'action' => 'update'
 									]
 								],
@@ -387,7 +334,7 @@ return [
 								'url' => [
 									'route' => [
 										'name' => 'Module',
-										'module' => 'ecommerce-product',
+										'module' => 'ecommerce-categories',
 										'action' => 'delete'
 									]
 								],
@@ -426,7 +373,7 @@ return [
 								'enable' => true,
 								'route' => [
 									'name' => 'Module',
-									'module' => 'ecommerce-product',
+									'module' => 'ecommerce-categories',
 								]
 							],
 							'message' => 'Delete successfull!'

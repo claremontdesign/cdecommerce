@@ -81,6 +81,29 @@ class Product extends Model implements WidgetModelInterface, FilterableInterface
 		return $this->categories()->get();
 	}
 
+	/**
+	 * By Category
+	 * @param type $query
+	 * @param \Claremontdesign\Ecommerce\Model\Category $category
+	 * @return type
+	 */
+	public function scopeCategorized($query, Category $category = null)
+	{
+		if(is_null($category))
+		{
+			return $query->with(cd_config('database.e.productCategory.table.name'));
+		}
+
+		$categoryIds = $category->getDescendantsAndSelf()->lists(cd_config('database.e.productCategory.table.primary'));
+		return $query->with('categories')
+						->join(
+								cd_config('database.e.productCategoryPivot.table.name'),
+								cd_config('database.e.productCategoryPivot.table.name') . '.' . cd_config('database.e.product.table.primary'),
+								'=',
+								cd_config('database.e.product.table.name') . '.' . cd_config('database.e.product.table.primary'))
+						->whereIn(cd_config('database.e.productCategoryPivot.table.name') . '.' . cd_config('database.e.productCategory.table.primary'), $categoryIds);
+	}
+
 	// </editor-fold>
 
 	/**
@@ -153,7 +176,9 @@ class Product extends Model implements WidgetModelInterface, FilterableInterface
 			if(!empty($data['category']))
 			{
 				$this->categories()->sync($data['category']);
-			} else {
+			}
+			else
+			{
 				$this->categories()->detach();
 			}
 		}
