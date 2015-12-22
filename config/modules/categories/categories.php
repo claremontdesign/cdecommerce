@@ -106,9 +106,9 @@ $config = [
 					'widgets' => ['ecommerceCategoriesForm']
 				],
 				'products' => [
-					'enable' => false,
+					'enable' => true,
 					'request' => [
-//						'methods' => ['ajaxpost','ajaxget']
+						'methods' => ['ajaxpost','ajaxget']
 					],
 					'breadcrumb' => [
 						'nav::ecommerce.children.productsCategory.children.products'
@@ -153,5 +153,5 @@ $config = [
 	],
 ];
 return array_merge_recursive(
-		$config, require __DIR__ . '/tree.php', require __DIR__ . '/datatable.php', require __DIR__ . '/form.php'
+		$config, require __DIR__ . '/tree.php', require __DIR__ . '/products.php', require __DIR__ . '/form.php'
 );

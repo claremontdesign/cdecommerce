@@ -19,6 +19,9 @@ return [
 			'access' => 'minimum',
 			'enable' => true,
 			'type' => 'datatable',
+			'sortable' => [
+				'enable' => false,
+			],
 			'messages' => [
 				'empty' => [
 					'empty' => 'No data found.',
@@ -31,6 +34,17 @@ return [
 						'singular' => 'Product',
 						'plural' => 'Products'
 					],
+				],
+			],
+			'ajax' => [
+				'enable' => true,
+				'route' => [
+					'name' => 'Module',
+					'module' => 'ecommerce-categories',
+					'action' => 'products',
+					'record' => function(){
+						return app('cdbackend')->routeParam('record');
+					}
 				],
 			],
 			'action' => [
@@ -49,9 +63,42 @@ return [
 				],
 			],
 			'columns' => [
-				'id' => [
+				'position' => [
 					'enable' => true,
 					'position' => 0,
+					'index' => 'position',
+					'value' => [
+						'editable' => [
+							'enable' => true,
+							'element' => [
+								'type' => 'integer',
+								'inputonly' => true,
+								'attributes' => [
+									'size' => 'xsmall',
+									'data' => [
+										'data-positioning' => 1
+									],
+								],
+							],
+							'init' => true
+						],
+					],
+					'filter' => [
+						'enable' => true,
+						'index' => cd_config('database.e.productCategoryPivot.table.name') . '.position'
+					],
+					'sort' => [
+						'enable' => true,
+						'index' => cd_config('database.e.productCategoryPivot.table.name') . '.position'
+					],
+					'type' => 'minmax',
+					'attributes' => [
+						'label' => 'Position',
+					],
+				],
+				'id' => [
+					'enable' => true,
+					'position' => 1,
 					'index' => cd_config('database.e.product.table.primary'),
 					'filter' => [
 						'enable' => true,
@@ -75,7 +122,7 @@ return [
 					],
 				],
 				'title' => [
-					'position' => 1,
+					'position' => 2,
 					'index' => 'title',
 					'type' => 'string',
 					'attributes' => [
@@ -91,13 +138,15 @@ return [
 					],
 					'sort' => [
 						'enable' => true,
+						'index' => cd_config('database.e.product.table.name') . '.title'
 					],
 					'filter' => [
 						'enable' => true,
+						'index' => cd_config('database.e.product.table.name') . '.title'
 					],
 				],
 				'price' => [
-					'position' => 2,
+					'position' => 3,
 					'index' => 'price',
 					'type' => 'price',
 					'attributes' => [
@@ -113,13 +162,15 @@ return [
 					],
 					'sort' => [
 						'enable' => true,
+						'index' => cd_config('database.e.product.table.name') . '.price'
 					],
 					'filter' => [
 						'enable' => true,
+						'index' => cd_config('database.e.product.table.name') . '.price'
 					],
 				],
 				'status' => [
-					'position' => 3,
+					'position' => 4,
 					'index' => 'status',
 					'type' => 'enabledisable',
 					'attributes' => [
@@ -139,6 +190,7 @@ return [
 					],
 					'sort' => [
 						'enable' => true,
+						'index' => cd_config('database.e.product.table.name') . '.status'
 					],
 				],
 			],
@@ -161,8 +213,9 @@ return [
 				'class' => cd_config('database.e.product.model.class'),
 				'repository' => [
 					'method' => 'getProducts',
-					'sort' => [cd_config('database.e.product.table.name') . '.' . cd_config('database.e.product.table.primary') => 'desc'],
-					'rowsPerPage' => 10,
+					'sortrequest' => 'position-asc',
+					'sort' => [cd_config('database.e.productCategoryPivot.table.name') . '.position' => 'ASC'],
+					'rowsPerPage' => 2,
 					'class' => cd_config('database.e.product.repository.class')
 				],
 			],

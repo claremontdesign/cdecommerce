@@ -22,12 +22,13 @@ use Claremontdesign\Cdbase\Repository\Contracts\CategorybleInterface;
 use Claremontdesign\Cdbase\Repository\Traits\Filterable;
 use Claremontdesign\Cdbase\Repository\Traits\Joinable;
 use Claremontdesign\Cdbase\Repository\Traits\Sortable;
+use Claremontdesign\Cdbase\Repository\Contracts\PositionableInterface;
 use Claremontdesign\Cdbase\Model\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Claremontdesign\Cdbase\Widgets\ModelInterface as WidgetModelInterface;
 use Claremontdesign\Cdbase\Widgets\WidgetTypes\WidgetTypeInterface;
 
-class Product extends Model implements WidgetModelInterface, FilterableInterface, JoinableInterface, SortableInterface, CategorybleInterface
+class Product extends Model implements WidgetModelInterface, FilterableInterface, JoinableInterface, PositionableInterface, SortableInterface, CategorybleInterface
 {
 
 	use Filterable,
@@ -105,6 +106,15 @@ class Product extends Model implements WidgetModelInterface, FilterableInterface
 	}
 
 	// </editor-fold>
+
+	/**
+	 * REturn the Item Position
+	 * @return integer
+	 */
+	public function position()
+	{
+		return $this->position;
+	}
 
 	/**
 	 * Return the name of the 'status' column
