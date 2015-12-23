@@ -59,6 +59,23 @@ class Product extends Repository implements RepositoryModuleInterface
 	 */
 	public function getAll($columns = ['*'], $filters = [], $sort = [], $joins = [], $paginate = [], $options = [], $debug = false)
 	{
+		if(!empty($filters[$this->_categoryPrimaryKey()]))
+		{
+			unset($filters[$this->_categoryPrimaryKey()]);
+		}
+		$counter = 0;
+		foreach($sort as $s)
+		{
+			if(!empty($s))
+			{
+				unset($sort[$counter][$this->_pivotTable() . '.position']);
+			}
+			$counter++;
+		}
+		if(empty($sort))
+		{
+			$sort = [$this->_table() . '.' . $this->_primaryKey() => 'DESC'];
+		}
 		return $this->_casts($this->repo->setDebug($debug)->getAll($columns, $filters, $sort, $joins, $paginate, $options));
 	}
 
@@ -74,21 +91,27 @@ class Product extends Repository implements RepositoryModuleInterface
 	 * @param type $debug
 	 * @return Collection of Model
 	 */
-	public function byNestedSet(ModelCategory $node, $columns = ['*'], $filters = [], $sort = [], $joins = [], $paginate = [], $options = [], $debug = false)
+	public function byNestedSet(ModelCategory $node, $columns = ['*'], $filters = [], $sort = [], $joins = [], $paginate = [], $options = [], $debug = false, $notIn = false)
 	{
 		if(!empty($filters[$this->_categoryPrimaryKey()]))
 		{
 			unset($filters[$this->_categoryPrimaryKey()]);
 		}
+		if($notIn)
+		{
+			return $this->getAll($columns, $filters, $sort, $joins, $paginate, $options, $debug);
+		}
 		$nodeIds = $node->getDescendantsAndSelf()->lists(cd_config('database.e.productCategory.table.primary'));
 		$columns = [
-				$this->_table() . '.*',
-				$this->_pivotTable() . '.position',
-			];
-		if($this->repo->getModel() instanceof \Claremontdesign\Cdbase\Repository\Contracts\PositionableInterface)
-		{
-			// $sort = [$this->_pivotTable() . '.position' => 'ASC'];
-		}
+			$this->_table() . '.*',
+			$this->_pivotTable() . '.position',
+			$this->_pivotTable() . '.' . cd_config('database.e.product.table.primary') . ' as pivot_item_id',
+			$this->_pivotTable() . '.' . cd_config('database.e.productCategory.table.primary') . ' as pivot_category_id',
+		];
+		//if($this->repo->getModel() instanceof \Claremontdesign\Cdbase\Repository\Contracts\PositionableInterface)
+		//{
+		// $sort = [$this->_pivotTable() . '.position' => 'ASC'];
+		//}
 		$joins = [];
 		$joins[] = [
 			'model' => $this->_pivotTable() . ' as ' . $this->_pivotTable(),
@@ -101,17 +124,13 @@ class Product extends Repository implements RepositoryModuleInterface
 			'local_key' => $this->_pivotTable() . '.' . $this->_categoryPrimaryKey(),
 		];
 
-
-		$filters[] = [
-			$this->_pivotTable() . '.' . $this->_categoryPrimaryKey() => [
-				'in' => [
-					'field' => $this->_pivotTable() . '.' . $this->_categoryPrimaryKey(),
-					'values' => $nodeIds
-				]
+		$filters[$this->_pivotTable() . '.' . $this->_categoryPrimaryKey()] = [
+			'in' => [
+				'field' => $this->_pivotTable() . '.' . $this->_categoryPrimaryKey(),
+				'values' => collect($nodeIds)->all()
 			]
 		];
-
-		return $this->getAll($columns, $filters, $sort, $joins, $paginate, $options, $debug);
+		return $this->_casts($this->repo->setDebug($debug)->getAll($columns, $filters, $sort, $joins, $paginate, $options));
 	}
 
 	/**

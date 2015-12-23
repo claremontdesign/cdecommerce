@@ -28,12 +28,10 @@ return [
 					'notfound' => 'Cannot find the record/s you are looking for. Kindly try again.'
 				],
 			],
-			'config' => [
-				'attributes' => [
-					'recordName' => [
-						'singular' => 'Product',
-						'plural' => 'Products'
-					],
+			'attributes' => [
+				'recordName' => [
+					'singular' => 'Product',
+					'plural' => 'Products'
 				],
 			],
 			'ajax' => [
@@ -202,9 +200,10 @@ return [
 					],
 					'model' => [
 						'class' => cd_config('database.e.productCategory.model.class'),
+						'primary' => cd_config('database.e.productCategory.table.primary'),
 						'repository' => [
 							'class' => cd_config('database.e.productCategory.repository.class')
-						],
+						]
 					]
 				],
 				'value' => [
@@ -212,7 +211,6 @@ return [
 				],
 				'class' => cd_config('database.e.product.model.class'),
 				'repository' => [
-					'method' => 'getProducts',
 					'sortrequest' => 'position-asc',
 					'sort' => [cd_config('database.e.productCategoryPivot.table.name') . '.position' => 'ASC'],
 					'rowsPerPage' => 2,

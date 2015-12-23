@@ -98,10 +98,7 @@ class Product extends Model implements WidgetModelInterface, FilterableInterface
 		$categoryIds = $category->getDescendantsAndSelf()->lists(cd_config('database.e.productCategory.table.primary'));
 		return $query->with('categories')
 						->join(
-								cd_config('database.e.productCategoryPivot.table.name'),
-								cd_config('database.e.productCategoryPivot.table.name') . '.' . cd_config('database.e.product.table.primary'),
-								'=',
-								cd_config('database.e.product.table.name') . '.' . cd_config('database.e.product.table.primary'))
+						cd_config('database.e.productCategoryPivot.table.name'), cd_config('database.e.productCategoryPivot.table.name') . '.' . cd_config('database.e.product.table.primary'), '=', cd_config('database.e.product.table.name') . '.' . cd_config('database.e.product.table.primary'))
 						->whereIn(cd_config('database.e.productCategoryPivot.table.name') . '.' . cd_config('database.e.productCategory.table.primary'), $categoryIds);
 	}
 
@@ -113,7 +110,31 @@ class Product extends Model implements WidgetModelInterface, FilterableInterface
 	 */
 	public function position()
 	{
-		return $this->position;
+		if(isset($this->position))
+		{
+			return $this->position;
+		}
+		return null;
+	}
+
+	public function pivotItemId()
+	{
+		return $this->id();
+	}
+
+	public function pivotCategoryId()
+	{
+		if(isset($this->pivot_category_id))
+		{
+			return $this->pivot_category_id;
+		}
+		return null;
+	}
+
+	public function updatePivotPosition($categoryId, $position)
+	{
+		$this->categories()->updateExistingPivot([$categoryId], ['position' => $position]);
+		return $this->save();
 	}
 
 	/**

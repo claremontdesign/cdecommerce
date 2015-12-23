@@ -61,8 +61,13 @@ return [
 					'products' => [
 						'enable' => true,
 						'position' => 50,
+						'form' => [
+							'submit' => [
+								'enable' => false
+							],
+						],
 						'attributes' => [
-							'label' => 'Products',
+							'label' => 'Category Products',
 						],
 						'elements' => ['products']
 					],
