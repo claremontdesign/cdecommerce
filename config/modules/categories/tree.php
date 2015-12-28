@@ -26,6 +26,23 @@ return [
 				'collapsed' => true,
 				'dualpane' => true
 			],
+			'toolbars' => [
+				'topleft' => [
+					'create' => [
+						'enable' => true,
+						'attributes' => [
+							'label' => 'New Category',
+						],
+						'url' => [
+							'route' => [
+								'name' => 'Module',
+								'module' => 'ecommerce-categories',
+								'action' => 'create',
+							],
+						],
+					],
+				],
+			],
 			'infopane' => [
 				'enable' => true,
 				'widget' => ['ecommerceCategoryForm'],
