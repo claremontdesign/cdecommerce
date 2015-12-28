@@ -91,6 +91,9 @@ $config = [
 				],
 				'update' => [
 					'enable' => true,
+					'request' => [
+						 'methods' => ['ajaxpost']
+					],
 					'widgets' => ['ecommerceCategoryForm']
 				],
 				'delete' => [

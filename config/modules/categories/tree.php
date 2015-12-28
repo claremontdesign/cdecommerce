@@ -27,6 +27,7 @@ return [
 				'dualpane' => true
 			],
 			'infopane' => [
+				'enable' => true,
 				'widget' => ['ecommerceCategoryForm'],
 			],
 			'messages' => [
